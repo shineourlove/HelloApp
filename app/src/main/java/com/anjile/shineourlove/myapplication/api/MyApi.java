@@ -3,7 +3,6 @@ package com.anjile.shineourlove.myapplication.api;
 import com.anjile.shineourlove.myapplication.entity.Retrofit2EntrtyTest1;
 
 import java.util.List;
-import java.util.Observable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
