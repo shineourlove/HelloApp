@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.anjile.shineourlove.myapplication.R;
+import com.anjile.shineourlove.myapplication.fragment.FragmentFish;
 import com.anjile.shineourlove.myapplication.fragment.FragmentFour;
 import com.anjile.shineourlove.myapplication.fragment.FragmentOne;
 import com.anjile.shineourlove.myapplication.fragment.FragmentThree;
@@ -19,6 +20,8 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
     private FragmentTwo mFragmentTwo;
     private FragmentThree mFragmentThree;
     private FragmentFour mFragmentFour;
+    private FragmentFish fragmentFish;
+    private BadgeItem badgeItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +31,14 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
         /**
          * 设置底部item的提示泡泡
          */
-        BadgeItem badgeItem = new BadgeItem();
+        badgeItem = new BadgeItem();
         badgeItem.setHideOnSelect(false)
                 .setText("10")
                 .setBackgroundColorResource(R.color.orange)
                 .setBorderWidth(0);
 
         mBottomNavigationBar.setMode(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
-        mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        mBottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);//设置底部导航按钮的模式
         mBottomNavigationBar.setBarBackgroundColor(R.color.blue);//set background color for navigation bar
         mBottomNavigationBar.setInActiveColor(R.color.white);//unSelected icon color
         mBottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.icon_one, R.string.tab_one).setActiveColorResource(R.color.green).setBadgeItem(badgeItem))
@@ -48,11 +51,14 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
         setDefaultFragment();
     }
 
-
+    /**
+     * 设置加载默认的碎片
+     */
     private void setDefaultFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        mFragmentOne = FragmentOne.newInstance("First Fragment");
-        transaction.replace(R.id.ll_content, mFragmentOne).commit();
+        if (fragmentFish == null)
+            fragmentFish = new FragmentFish();
+        transaction.replace(R.id.ll_content, fragmentFish).commit();
     }
 
     @Override
@@ -60,16 +66,18 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (position) {
             case 0:
-                if (mFragmentOne == null) {
-                    mFragmentOne = FragmentOne.newInstance("First Fragment");
-                }
-                transaction.replace(R.id.ll_content, mFragmentOne);
+                if (fragmentFish == null)
+                    fragmentFish = new FragmentFish();
+                transaction.replace(R.id.ll_content, fragmentFish);
+                badgeItem.hide();//隐藏右上角的提示
                 break;
             case 1:
                 if (mFragmentTwo == null) {
                     mFragmentTwo = FragmentTwo.newInstance("Second Fragment");
                 }
                 transaction.replace(R.id.ll_content, mFragmentTwo);
+                badgeItem.setText("新消息");
+                badgeItem.show();//显示右上角的提示
                 break;
             case 2:
                 if (mFragmentThree == null) {
@@ -84,14 +92,12 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
                 transaction.replace(R.id.ll_content, mFragmentFour);
                 break;
             default:
-                if (mFragmentOne == null) {
-                    mFragmentOne = FragmentOne.newInstance("First Fragment");
-                }
-                transaction.replace(R.id.ll_content, mFragmentOne);
+                if (fragmentFish == null)
+                    fragmentFish = new FragmentFish();
+                transaction.replace(R.id.ll_content, fragmentFish);
                 break;
         }
         transaction.commit();
-
     }
 
     @Override
@@ -103,5 +109,4 @@ public class FragmentActivity extends AppCompatActivity implements BottomNavigat
     public void onTabReselected(int position) {
 
     }
-
 }

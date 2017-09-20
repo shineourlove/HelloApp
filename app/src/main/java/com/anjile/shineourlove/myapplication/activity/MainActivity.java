@@ -56,12 +56,15 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventTest1(String s) {
+        Glide.with(MainActivity.this)
+                .load("https://pic2.zhimg.com/v2-8c76f64e222451b227a96e7939ea7fdd_b.png")
+                .transition(new DrawableTransitionOptions().crossFade(500))
+                .apply(new RequestOptions().placeholder(R.drawable.test1))
+                .into(imgGlide1);
     }
 
     @Override
     public void viewClick(View v) {
 
     }
-
-
 }
